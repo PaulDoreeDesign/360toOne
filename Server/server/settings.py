@@ -77,6 +77,8 @@ USE_L10N = True
 
 USE_TZ = True
 
+STATIC_ROOT = os.path.join(BASE_DIR, 'static')
+
 STATIC_URL = '/static/'
 
 DEFAULT_RENDERER_CLASSES = ['rest_framework.renderers.JSONRenderer']

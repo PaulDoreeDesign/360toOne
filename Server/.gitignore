@@ -1,4 +1,5 @@
 /**/__pycache__/*
 /.idea/*
 /server/settings_secret.py
+/static/*
 /*.sqlite3
