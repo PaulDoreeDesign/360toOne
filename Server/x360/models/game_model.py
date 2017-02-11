@@ -17,3 +17,4 @@ class GameModel(models.Model):
     class Meta:
         verbose_name = _('Game')
         verbose_name_plural = _('Games')
+        ordering = ('title',)
