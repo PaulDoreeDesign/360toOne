@@ -1,0 +1,6 @@
+.object-tools a.downloadlink {
+    background-image: url(../img/tooltag-download.svg);
+    background-repeat: no-repeat;
+    background-position: 95% center;
+    padding-right: 26px;
+}
