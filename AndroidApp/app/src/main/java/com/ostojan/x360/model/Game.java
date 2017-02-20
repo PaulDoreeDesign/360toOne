@@ -32,6 +32,29 @@ public class Game {
         return storeLink;
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+
+        Game game = (Game) o;
+
+        if (id != null ? !id.equals(game.id) : game.id != null) {
+            return false;
+        }
+        if (title != null ? !title.equals(game.title) : game.title != null) {
+            return false;
+        }
+        if (coverLink != null ? !coverLink.equals(game.coverLink) : game.coverLink != null) {
+            return false;
+        }
+        return storeLink != null ? storeLink.equals(game.storeLink) : game.storeLink == null;
+    }
+
     public static class Builder {
         private Game game;
 
