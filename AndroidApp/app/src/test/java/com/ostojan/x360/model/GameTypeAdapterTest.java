@@ -140,7 +140,8 @@ public class GameTypeAdapterTest {
             tryReadGameWithoutCoverLinkFromJson();
         } catch (MalformedURLException e) {
             fail("Couldn't create URL for Game object");
-        };
+        }
+        ;
     }
 
     private void tryReadGameWithoutCoverLinkFromJson() throws MalformedURLException {

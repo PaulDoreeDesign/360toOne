@@ -2,12 +2,6 @@ package com.ostojan.x360.model;
 
 import java.net.MalformedURLException;
 
-import static org.junit.Assert.fail;
-
-/**
- * Created by ostojan on 20.02.2017.
- */
-
 public class GameHelper {
 
     public static final Integer ID = 1;
@@ -19,23 +13,23 @@ public class GameHelper {
         return createGameFromData(ID, TITLE, COVER_LINK, STORE_LINK);
     }
 
-    public static  Game createSimpleGameWithoutId() throws MalformedURLException {
+    public static Game createSimpleGameWithoutId() throws MalformedURLException {
         return createGameFromData(null, TITLE, COVER_LINK, STORE_LINK);
     }
 
-    public static  Game createSimpleGameWithoutTitle() throws MalformedURLException {
+    public static Game createSimpleGameWithoutTitle() throws MalformedURLException {
         return createGameFromData(ID, null, COVER_LINK, STORE_LINK);
     }
 
-    public static  Game createSimpleGameWithoutCoverLink() throws MalformedURLException {
+    public static Game createSimpleGameWithoutCoverLink() throws MalformedURLException {
         return createGameFromData(ID, TITLE, null, STORE_LINK);
     }
 
-    public static  Game createSimpleGameWithoutStoreLink() throws MalformedURLException {
+    public static Game createSimpleGameWithoutStoreLink() throws MalformedURLException {
         return createGameFromData(ID, TITLE, COVER_LINK, null);
     }
 
-    public static  Game createGameFromData(Integer id, String title, String coverLink, String storeLink) throws MalformedURLException {
+    public static Game createGameFromData(Integer id, String title, String coverLink, String storeLink) throws MalformedURLException {
         Game.Builder gameBuilder = new Game.Builder();
         if (id != null) {
             gameBuilder.id(id);
