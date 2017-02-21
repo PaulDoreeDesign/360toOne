@@ -1,0 +1,6 @@
+// You need to create your own file 'Properties.java' base on this file
+package com.ostojan.x360;
+
+public final class Properties {
+    public static final String SERVER_URL = "server-url";
+}
