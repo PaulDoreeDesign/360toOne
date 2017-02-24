@@ -15,8 +15,10 @@ public class ApiController {
     }
 
     public void getGames(Callback<List<Game>> callback) {
+        apiClient.getGames().enqueue(callback);
     }
 
     public void getGameWithId(int id, Callback<Game> callback) {
+        apiClient.getGameWithId(id).enqueue(callback);
     }
 }
