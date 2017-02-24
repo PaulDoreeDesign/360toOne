@@ -1,3 +1,8 @@
 <resources>
     <string name="app_name">360 to One</string>
+
+    <string name="error_problem_with_data">Problem with obtained data</string>
+    <string name="error_problem_with_server">Problem connecting to server</string>
+    <string name="error_no_internet">No internet connection</string>
+    <string name="error_unknown">Unknown error</string>
 </resources>
