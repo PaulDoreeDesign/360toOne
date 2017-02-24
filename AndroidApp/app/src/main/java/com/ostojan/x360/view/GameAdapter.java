@@ -40,6 +40,11 @@ public class GameAdapter extends RecyclerView.Adapter<GameViewHolder> {
     public void onBindViewHolder(GameViewHolder holder, int position) {
         Game game = games.get(position);
         holder.title.setText(game.getTitle());
+        Picasso.with(holder.itemView.getContext())
+                .load(game.getCoverLink().toString())
+                .placeholder(R.drawable.ic_loading)
+                .error(R.drawable.ic_error)
+                .into(holder.coverImage);
     }
 
     @Override
