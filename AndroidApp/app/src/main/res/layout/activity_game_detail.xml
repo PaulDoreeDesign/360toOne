@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/activity_game_detial"
     android:layout_width="match_parent"
@@ -10,4 +11,27 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context="com.ostojan.x360.activities.GameDetailActivity">
 
+    <ImageView
+        android:id="@+id/image_detail_cover"
+        android:layout_width="256dp"
+        android:layout_height="256dp"
+        android:layout_centerHorizontal="true"
+        app:srcCompat="@drawable/ic_loading" />
+
+    <TextView
+        android:id="@+id/text_game_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/image_detail_cover"
+        android:layout_centerHorizontal="true"
+        android:text="@string/title_game_title"
+        android:textAppearance="@style/Base.TextAppearance.AppCompat.Large" />
+
+    <Button
+        android:id="@+id/text_store_link"
+        style="@style/Widget.AppCompat.Button.Borderless.Colored"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/text_game_title"
+        android:text="@string/msg_store_link" />
 </RelativeLayout>

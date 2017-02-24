@@ -5,5 +5,8 @@
     <string name="error_problem_with_server">Problem connecting to server</string>
     <string name="error_no_internet">No internet connection</string>
     <string name="error_unknown">Unknown error</string>
+
     <string name="title_game_title">Title</string>
+    <string name="msg_store_link">Microsoft\'s store</string>
+    <string name="error_no_such_game">There is no such game</string>
 </resources>
