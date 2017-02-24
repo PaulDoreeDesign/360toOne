@@ -10,4 +10,8 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context="com.ostojan.x360.activities.MainActivity">
 
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/recycler_games_list"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
 </RelativeLayout>
