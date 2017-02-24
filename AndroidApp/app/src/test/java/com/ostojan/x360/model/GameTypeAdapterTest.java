@@ -27,6 +27,7 @@ public class GameTypeAdapterTest {
         try {
             tryCreateJsonFromSimpleGame();
         } catch (MalformedURLException e) {
+            e.printStackTrace();
             fail("Couldn't create URL for Game object");
         }
     }
@@ -41,6 +42,7 @@ public class GameTypeAdapterTest {
         try {
             tryCreateJsonFromGameWithoutId();
         } catch (MalformedURLException e) {
+            e.printStackTrace();
             fail("Couldn't create URL for Game object");
         }
     }
@@ -55,6 +57,7 @@ public class GameTypeAdapterTest {
         try {
             tryCreateJsonFromGameWithoutTitle();
         } catch (MalformedURLException e) {
+            e.printStackTrace();
             fail("Couldn't create URL for Game object");
         }
     }
@@ -69,6 +72,7 @@ public class GameTypeAdapterTest {
         try {
             tryCreateJsonFromGameWithoutCoverLink();
         } catch (MalformedURLException e) {
+            e.printStackTrace();
             fail("Couldn't create URL for Game object");
         }
     }
@@ -83,6 +87,7 @@ public class GameTypeAdapterTest {
         try {
             tryCreateJsonFromGameWithoutStoreLink();
         } catch (MalformedURLException e) {
+            e.printStackTrace();
             fail("Couldn't create URL for Game object");
         }
     }
@@ -97,6 +102,7 @@ public class GameTypeAdapterTest {
         try {
             tryReadGameFromJson();
         } catch (MalformedURLException e) {
+            e.printStackTrace();
             fail("Couldn't create URL for Game object");
         }
     }
@@ -111,6 +117,7 @@ public class GameTypeAdapterTest {
         try {
             tryReadGameWithoutIdFromJson();
         } catch (MalformedURLException e) {
+            e.printStackTrace();
             fail("Couldn't create URL for Game object");
         }
     }
@@ -125,6 +132,7 @@ public class GameTypeAdapterTest {
         try {
             tryReadGameWithoutTitleFromJson();
         } catch (MalformedURLException e) {
+            e.printStackTrace();
             fail("Couldn't create URL for Game object");
         }
     }
@@ -139,6 +147,7 @@ public class GameTypeAdapterTest {
         try {
             tryReadGameWithoutCoverLinkFromJson();
         } catch (MalformedURLException e) {
+            e.printStackTrace();
             fail("Couldn't create URL for Game object");
         }
         ;
@@ -154,6 +163,7 @@ public class GameTypeAdapterTest {
         try {
             tryReadGameWithoutStoreLinkFromJson();
         } catch (MalformedURLException e) {
+            e.printStackTrace();
             fail("Couldn't create URL for Game object");
         }
     }

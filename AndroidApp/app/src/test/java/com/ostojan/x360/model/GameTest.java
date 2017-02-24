@@ -14,6 +14,7 @@ public class GameTest {
         try {
             tryCheckGetters();
         } catch (MalformedURLException e) {
+            e.printStackTrace();
             fail("Couldn't create URL for Game object");
         }
     }
@@ -31,6 +32,7 @@ public class GameTest {
         try {
             tryCompareTwoSameGames();
         } catch (MalformedURLException e) {
+            e.printStackTrace();
             fail("Couldn't create URL for Game object");
         }
     }
@@ -47,6 +49,7 @@ public class GameTest {
         try {
             tryCompareGameToItself();
         } catch (MalformedURLException e) {
+            e.printStackTrace();
             fail("Couldn't create URL for Game object");
         }
     }
@@ -61,6 +64,7 @@ public class GameTest {
         try {
             tryCompareTwoGamesWithDifferentIds();
         } catch (MalformedURLException e) {
+            e.printStackTrace();
             fail("Couldn't create URL for Game object");
         }
     }
@@ -79,6 +83,7 @@ public class GameTest {
         try {
             tryCompareTwoGamesWithDifferentTitles();
         } catch (MalformedURLException e) {
+            e.printStackTrace();
             fail("Couldn't create URL for Game object");
         }
     }
@@ -97,6 +102,7 @@ public class GameTest {
         try {
             tryCompareTwoGamesWithDifferentCoverLinks();
         } catch (MalformedURLException e) {
+            e.printStackTrace();
             fail("Couldn't create URL for Game object");
         }
     }
@@ -115,6 +121,7 @@ public class GameTest {
         try {
             tryCompareTwoGamesWithDifferentStoreLinks();
         } catch (MalformedURLException e) {
+            e.printStackTrace();
             fail("Couldn't create URL for Game object");
         }
     }
