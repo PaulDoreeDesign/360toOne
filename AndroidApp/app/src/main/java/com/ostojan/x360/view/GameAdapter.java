@@ -5,7 +5,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.ostojan.x360.R;
 import com.ostojan.x360.model.Game;
+import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -29,7 +31,7 @@ public class GameAdapter extends RecyclerView.Adapter<GameViewHolder> {
     @Override
     public GameViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext())
-                .inflate(android.R.layout.simple_list_item_1, parent, false);
+                .inflate(R.layout.item_game, parent, false);
         view.setOnClickListener(onClickListener);
         return new GameViewHolder(view);
     }
@@ -37,7 +39,7 @@ public class GameAdapter extends RecyclerView.Adapter<GameViewHolder> {
     @Override
     public void onBindViewHolder(GameViewHolder holder, int position) {
         Game game = games.get(position);
-        holder.text1.setText(game.getTitle());
+        holder.title.setText(game.getTitle());
     }
 
     @Override
