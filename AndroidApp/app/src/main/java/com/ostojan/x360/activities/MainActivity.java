@@ -1,5 +1,6 @@
 package com.ostojan.x360.activities;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DefaultItemAnimator;
@@ -60,7 +61,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     @Override
     public void onClick(View v) {
-
+        Intent intent = new Intent(this, GameDetailActivity.class);
+        int layoutPosition = gamesList.getChildLayoutPosition(v);
+        intent.putExtra(GameDetailActivity.EXTRA_GAME_ID, gamesAdapter.get(layoutPosition).getId());
+        startActivity(intent);
     }
 
     @Override
