@@ -5,7 +5,7 @@ from x360.serializers import GameModelDetailSerializer, GameModelListSerializer
 
 
 class GameModelApiViewSet(ReadOnlyModelViewSet):
-    queryset = GameModel.objects.all()
+    queryset = GameModel.objects.filter(published=True)
 
     def get_serializer_class(self):
         if self.action == 'list':
