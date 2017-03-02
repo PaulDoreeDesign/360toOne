@@ -11,7 +11,7 @@ from django.utils.translation import gettext_lazy as _, ngettext_lazy as __
 from x360.models import GameModel
 
 
-class TestGameModelAdmin(TestCase):
+class TestDownloadGamesFromXbox(TestCase):
     def setUp(self):
         self.well_formatted_response = b"""
             Irrelevant content before
