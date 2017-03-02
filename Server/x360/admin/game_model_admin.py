@@ -16,6 +16,8 @@ from x360.models import GameModel
 
 @register(GameModel)
 class GameModelAdmin(admin.ModelAdmin):
+    actions = ['mark_games_as_published', 'mark_games_as_unpublished']
+
     def download_games_list_from_xbox(self, request):
         if self.has_add_permission(request):
             try:
@@ -88,6 +90,34 @@ class GameModelAdmin(admin.ModelAdmin):
         connection = HTTPConnection(xbox_site_url)
         connection.request('GET', games_list_url)
         return connection.getresponse().read().decode()
+
+    def mark_games_as_published(self, request, queryset):
+        queryset.update(published=True)
+        self.message_user(request,
+                          __('Successfully published %(count)d %(name)s',
+                             'Successfully published %(count)d %(plural_name)s',
+                             len(queryset)) % dict(
+                              count=len(queryset),
+                              name=GameModel._meta.verbose_name,
+                              plural_name=GameModel._meta.verbose_name_plural
+                          ),
+                          level=messages.INFO)
+
+    mark_games_as_published.short_description = _('Mark selected as published')
+
+    def mark_games_as_unpublished(self, request, queryset):
+        queryset.update(published=False)
+        self.message_user(request,
+                          __('Successfully unpublished %(count)d %(name)s',
+                             'Successfully unpublished %(count)d %(plural_name)s',
+                             len(queryset)) % dict(
+                              count=len(queryset),
+                              name=GameModel._meta.verbose_name,
+                              plural_name=GameModel._meta.verbose_name_plural
+                          ),
+                          level=messages.INFO)
+
+    mark_games_as_unpublished.short_description = _('Mark selected as unpublished')
 
     def get_urls(self):
         info = self.model._meta.app_label, self.model._meta.model_name
