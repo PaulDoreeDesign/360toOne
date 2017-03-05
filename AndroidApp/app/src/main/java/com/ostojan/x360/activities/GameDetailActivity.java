@@ -48,7 +48,7 @@ public class GameDetailActivity extends AppCompatActivity implements Callback<Ga
         setContentView(R.layout.activity_game_detail);
         ButterKnife.bind(this);
         getGameId();
-        apiController = new ApiController(ApiClient.getInstance().getApiClientInterface());
+        apiController = new ApiController(ApiClient.getApiClientInterface());
     }
 
     public void getGameId() {

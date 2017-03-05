@@ -11,33 +11,27 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 public class ApiClient {
 
-    private static volatile ApiClient instance;
-    private ApiClientInterface apiClient;
+    private static volatile ApiClientInterface apiClient;
 
     private ApiClient() {
-        if (instance != null) {
-            throw new RuntimeException("Use getInstance() to get ApiClient");
-        }
-        Gson gson = new GsonBuilder()
-                .registerTypeAdapter(Game.class, new GameTypeAdapter())
-                .create();
-        apiClient = new Retrofit.Builder()
-                .baseUrl(Properties.SERVER_URL)
-                .addConverterFactory(GsonConverterFactory.create(gson))
-                .build()
-                .create(ApiClientInterface.class);
+        throw new RuntimeException("Use getApiClientInterface() to get ApiClientInterface");
     }
 
-    public ApiClientInterface getApiClientInterface() {
-        return apiClient;
-    }
-
-    public static ApiClient getInstance() {
-        if (instance == null) {
+    public static ApiClientInterface getApiClientInterface() {
+        if (apiClient == null) {
             synchronized (ApiClient.class) {
-                if (instance == null) instance = new ApiClient();
+                if (apiClient == null) {
+                    Gson gson = new GsonBuilder()
+                            .registerTypeAdapter(Game.class, new GameTypeAdapter())
+                            .create();
+                    apiClient = new Retrofit.Builder()
+                            .baseUrl(Properties.SERVER_URL)
+                            .addConverterFactory(GsonConverterFactory.create(gson))
+                            .build()
+                            .create(ApiClientInterface.class);
+                }
             }
         }
-        return instance;
+        return apiClient;
     }
 }

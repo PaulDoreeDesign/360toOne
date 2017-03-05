@@ -42,7 +42,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
         createGameListRecyclerView();
-        apiController = new ApiController(ApiClient.getInstance().getApiClientInterface());
+        apiController = new ApiController(ApiClient.getApiClientInterface());
     }
 
     private void createGameListRecyclerView() {

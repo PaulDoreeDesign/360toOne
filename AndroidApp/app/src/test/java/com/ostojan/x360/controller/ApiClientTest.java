@@ -13,39 +13,24 @@ import static org.junit.Assert.fail;
 public class ApiClientTest {
 
     @Test
-    public void getInstanceReturnsNotNullObject() {
-        assertNotEquals("ApiClient.getInstance() returned null object", null, ApiClient.getInstance());
-    }
-
-    @Test
-    public void createMultipleApiClients() {
+    public void createMultipleApiClientInterfaces() {
         try {
-            tryCreateMultipleApiClients();
+            tryCreateMultipleApiClientsInterface();
         } catch (NullPointerException e) {
-            fail("ApiClient.getInstance() returned null object");
+            fail("ApiClient.getApiClientInterface() returned null object");
         }
     }
 
-    private void tryCreateMultipleApiClients() throws NullPointerException{
-        ApiClient apiClient1 = ApiClient.getInstance();
-        ApiClient apiClient2 = ApiClient.getInstance();
-        String errorMessage = "ApiClients are not equal";
-        assertEquals(errorMessage, apiClient1, apiClient2);
+    private void tryCreateMultipleApiClientsInterface() throws NullPointerException{
+        ApiClientInterface apiClient1 = ApiClient.getApiClientInterface();
+        ApiClientInterface apiClient2 = ApiClient.getApiClientInterface();
+        String errorMessage = "ApiClientsInterface are not equal";
         assertTrue(errorMessage, apiClient1 == apiClient2);
         assertEquals(errorMessage, apiClient1.hashCode(), apiClient2.hashCode());
-    }
-
-    @Test(expected = InvocationTargetException.class)
-    public void createMultipleApiClientsUsingReflections() throws NoSuchMethodException, InvocationTargetException, InstantiationException, IllegalAccessException {
-        ApiClient.getInstance();
-        Class<ApiClient> classType = ApiClient.class;
-        Constructor<ApiClient> constructor = classType.getDeclaredConstructor();
-        constructor.setAccessible(true);
-        constructor.newInstance();
     }
     
     @Test
     public void getApiClientInterfaceReturnsNotNullObject() {
-        assertNotEquals("Returned object is null", null, ApiClient.getInstance().getApiClientInterface());
+        assertNotEquals("Returned object is null", null, ApiClient.getApiClientInterface());
     }
 }
