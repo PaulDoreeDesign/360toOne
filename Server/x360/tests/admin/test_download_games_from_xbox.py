@@ -8,11 +8,17 @@ from django.test import TestCase
 from django.urls import reverse
 from django.utils.translation import gettext_lazy as _, ngettext_lazy as __
 
-from x360.models import GameModel
+from x360.models import GameModel, RegionModel
 
 
 class TestDownloadGamesFromXbox(TestCase):
     def setUp(self):
+        self.regions = [
+            RegionModel.objects.create(name='Poland', code='pl'),
+            RegionModel.objects.create(name='United States', code='us'),
+            RegionModel.objects.create(name='Russia', code='ru'),
+            RegionModel.objects.create(name='Great Britain', code='gb')
+        ]
         self.well_formatted_response = b"""
             Irrelevant content before
             var bcgames = [
@@ -22,8 +28,8 @@ class TestDownloadGamesFromXbox(TestCase):
                     title: 'Game 1',
                     justreleased: 0,
                     fanfav: 0,
-                    includedLoc: "not supported yet",
-                    excludedLoc: "not supported yet"
+                    includedLoc: "pl, uS, RU, gb",
+                    excludedLoc: ""
                 },
                 {
                     image: 'http://www.game.com/cover2.jpg',
@@ -31,13 +37,13 @@ class TestDownloadGamesFromXbox(TestCase):
                     title: 'Game 2',
                     justreleased: 0,
                     fanfav: 0,
-                    includedLoc: "not supported yet",
-                    excludedLoc: "not supported yet"
+                    includedLoc: "",
+                    excludedLoc: "pl, uS, RU, gb"
                 }
             ]
             Irrelevant content after
             """
-        self.no_white_spaces_response = b"""Irrelevantv content before var bcgames=[{image:'http://www.game.com/cover1.jpg',url:'http://www.game.com/store/game1/',title:'Game 1',justreleased:0,fanfav:0,includedLoc:"not supported yet",excludedLoc:"not supported yet"},{image:'http://www.game.com/cover2.jpg',url:'http://www.game.com/store/game2/',title:'Game 2',justreleased:0,fanfav:0,includedLoc:"not supported yet",excludedLoc:"not supported yet"}]; Irrelevant content after"""
+        self.no_white_spaces_response = b"""Irrelevantv content before var bcgames=[{image:'http://www.game.com/cover1.jpg',url:'http://www.game.com/store/game1/',title:'Game 1',justreleased:0,fanfav:0,includedLoc:"pl,uS,RU,gb",excludedLoc:""},{image:'http://www.game.com/cover2.jpg',url:'http://www.game.com/store/game2/',title:'Game 2',justreleased:0,fanfav:0,includedLoc:"",excludedLoc:"pl,uS,RU,gb"}]; Irrelevant content after"""
         self.well_formatted_response_with_couple_json_lists = b"""
                     Irrelevant content before
                     var list1 = [{
@@ -50,8 +56,8 @@ class TestDownloadGamesFromXbox(TestCase):
                             title: 'Game 1',
                             justreleased: 0,
                             fanfav: 0,
-                            includedLoc: "not supported yet",
-                            excludedLoc: "not supported yet"
+                            includedLoc: "pl, uS, RU, gb",
+                            excludedLoc: ""
                         },
                         {
                             image: 'http://www.game.com/cover2.jpg',
@@ -59,8 +65,8 @@ class TestDownloadGamesFromXbox(TestCase):
                             title: 'Game 2',
                             justreleased: 0,
                             fanfav: 0,
-                            includedLoc: "not supported yet",
-                            excludedLoc: "not supported yet"
+                            includedLoc: "",
+                            excludedLoc: "pl, uS, RU, gb"
                         }
                     ]
                     var list2 = [{
@@ -68,13 +74,17 @@ class TestDownloadGamesFromXbox(TestCase):
                     }];
                     Irrelevant content after
                     """
-        self.no_white_spaces_response_with_couple_json_lists = b"""Irrelevantv content before var list1=[key:value,}];var bcgames=[{image:'http://www.game.com/cover1.jpg',url:'http://www.game.com/store/game1/',title:'Game 1',justreleased:0,fanfav:0,includedLoc:"not supported yet",excludedLoc:"not supported yet"},{image:'http://www.game.com/cover2.jpg',url:'http://www.game.com/store/game2/',title:'Game 2',justreleased:0,fanfav:0,includedLoc:"not supported yet",excludedLoc:"not supported yet"}];var list2=[key:value,}];Irrelevant content after"""
+        self.no_white_spaces_response_with_couple_json_lists = b"""Irrelevantv content before var list1=[key:value,}];var bcgames=[{image:'http://www.game.com/cover1.jpg',url:'http://www.game.com/store/game1/',title:'Game 1',justreleased:0,fanfav:0,includedLoc:"pl,uS,RU,gb",excludedLoc:""},{image:'http://www.game.com/cover2.jpg',url:'http://www.game.com/store/game2/',title:'Game 2',justreleased:0,fanfav:0,includedLoc:"",excludedLoc:"pl,uS,RU,gb"}];var list2=[key:value,}];Irrelevant content after"""
         self.empty_response = b''
         self.games = [
             dict(title='Game 1', cover_link='http://www.game.com/cover1.jpg',
-                 store_link='http://www.game.com/store/game1/'),
+                 store_link='http://www.game.com/store/game1/',
+                 available_regions=self.regions,
+                 excluded_regions=[]),
             dict(title='Game 2', cover_link='http://www.game.com/cover2.jpg',
-                 store_link='http://www.game.com/store/game2/'),
+                 store_link='http://www.game.com/store/game2/',
+                 available_regions=[],
+                 excluded_regions=self.regions),
         ]
         administrator = User.objects.create_superuser('admin', 'admin@example.com', 'password')
         administrator.set_password('password')
@@ -160,7 +170,7 @@ class TestDownloadGamesFromXbox(TestCase):
         mock_request.return_value = None
         mock_response.return_value = BytesIO(self.well_formatted_response)
         self.login_as_administrator()
-        GameModel.objects.create(**self.games[0])
+        self.create_games_from_dict(self.games[:-1])
         response = self.client.get(reverse('admin:%s_%s_download_from_xbox' % self.info), follow=True)
         self.assertEqual(len(self.games), GameModel.objects.count(), 'Incorrect number of games added')
         self.check_if_games_added_correctly(self.games[1:])
@@ -173,11 +183,19 @@ class TestDownloadGamesFromXbox(TestCase):
         mock_request.return_value = None
         mock_response.return_value = BytesIO(self.well_formatted_response)
         self.login_as_administrator()
-        for game in self.games:
-            GameModel.objects.create(**game)
+        self.create_games_from_dict(self.games)
         response = self.client.get(reverse('admin:%s_%s_download_from_xbox' % self.info), follow=True)
         self.assertEqual(len(self.games), GameModel.objects.count(), 'Incorrect number of games added')
         self.check_if_response_contains_message(response, self.successfully_added_games_message(0))
+
+    def create_games_from_dict(self, games):
+        for game in games:
+            game_dict = dict(title=game['title'], cover_link=game['cover_link'], store_link=game['store_link'])
+            game_object = GameModel.objects.create(**game_dict)
+            for region in game['available_regions']:
+                game_object.available_regions.add(region)
+            for region in game['excluded_regions']:
+                game_object.excluded_regions.add(region)
 
     @mock.patch.object(HTTPConnection, 'request')
     @mock.patch.object(HTTPConnection, 'getresponse')
@@ -220,6 +238,16 @@ class TestDownloadGamesFromXbox(TestCase):
                 game_from_store_link = GameModel.objects.get(store_link=game['store_link'])
                 self.assertEqual(game_from_title, game_from_store_link, error_message)
                 self.assertEqual(game_from_title, game_from_cover_link, error_message)
+                available_regions = set(game_from_title.available_regions.all())
+                self.assertEqual(len(game['available_regions']), len(available_regions),
+                                 'Available regions are not correct')
+                self.assertFalse(available_regions.difference(game['available_regions']),
+                                 'Available regions are not correct')
+                excluded_regions = set(game_from_title.excluded_regions.all())
+                self.assertEqual(len(game['excluded_regions']), len(excluded_regions),
+                                 'Excluded regions are not correct')
+                self.assertFalse(excluded_regions.difference(game['excluded_regions']),
+                                 'Excluded regions are not correct')
         except GameModel.DoesNotExist:
             self.fail('Data was not added correctly')
 
