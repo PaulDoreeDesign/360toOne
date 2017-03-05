@@ -39,6 +39,9 @@ public class GameTypeAdapter extends TypeAdapter<Game> {
                 case "store_link":
                     gameBuilder.storeLink(in.nextString());
                     break;
+                default:
+                    in.skipValue();
+                    break;
             }
         }
         in.endObject();
