@@ -17,3 +17,4 @@ class RegionModel(models.Model):
     class Meta:
         verbose_name = _('Region')
         verbose_name_plural = _('Regions')
+        ordering = ('name',)
