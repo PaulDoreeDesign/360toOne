@@ -25,6 +25,27 @@ public class Region {
         return code;
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+
+        Region region = (Region) o;
+
+        if (id != null ? !id.equals(region.id) : region.id != null) {
+            return false;
+        }
+        if (name != null ? !name.equals(region.name) : region.name != null) {
+            return false;
+        }
+        return code != null ? code.equals(region.code) : region.code == null;
+
+    }
+
     public static class Builder {
         private Region region;
 
