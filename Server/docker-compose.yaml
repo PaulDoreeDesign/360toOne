@@ -1,0 +1,22 @@
+version: '2'
+services:
+  nginx:
+    image: nginx:latest
+    container_name: ng
+    ports:
+      - "80:8000"
+    volumes:
+      - .:/src
+      - ./nginx:/etc/nginx/conf.d
+      - ./static:/static
+    depends_on:
+      - web
+  web:
+    build: .
+    container_name: x360
+    command: bash -c "python manage.py collectstatic --noinput && python manage.py migrate && python manage.py loaddata x360/regions.json && gunicorn server.wsgi --workers 3 --bind 0.0.0.0:8000"
+    volumes:
+      - .:/src
+      - ./static:/static
+    expose:
+      - "8000"
