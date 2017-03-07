@@ -14,7 +14,7 @@ services:
   web:
     build: .
     container_name: x360
-    command: bash -c "python manage.py collectstatic --noinput && python manage.py migrate && python manage.py loaddata x360/regions.json && gunicorn server.wsgi --workers 3 --bind 0.0.0.0:8000"
+    command: bash -c "python manage.py collectstatic --noinput && python manage.py migrate && python manage.py loaddata x360/regions.json && python manage.py loaddata x360/games.json && gunicorn server.wsgi --workers 3 --bind 0.0.0.0:8000"
     volumes:
       - .:/src
       - ./static:/static
