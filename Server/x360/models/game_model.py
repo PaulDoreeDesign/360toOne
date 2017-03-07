@@ -5,7 +5,7 @@ from .region_model import RegionModel
 
 
 class GameModel(models.Model):
-    title = models.CharField(max_length=255, unique=True, verbose_name=_('Game title'))
+    title = models.CharField(max_length=255, verbose_name=_('Game title'))
     cover_link = models.URLField(verbose_name=_('URL to cover image'))
     store_link = models.URLField(unique=True, verbose_name=_('URL to Microsoft Store'))
     published = models.BooleanField(default=False, verbose_name=_('Publish'))
