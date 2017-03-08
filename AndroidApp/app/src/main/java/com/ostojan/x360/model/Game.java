@@ -2,18 +2,23 @@ package com.ostojan.x360.model;
 
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.List;
 
 public class Game {
     private Integer id;
     private String title;
     private URL coverLink;
     private URL storeLink;
+    private List<Region> availableRegions;
+    private List<Region> excludedRegions;
 
     public Game() {
         id = null;
         title = null;
         coverLink = null;
         storeLink = null;
+        availableRegions = null;
+        excludedRegions = null;
     }
 
     public Integer getId() {
@@ -30,6 +35,14 @@ public class Game {
 
     public URL getStoreLink() {
         return storeLink;
+    }
+
+    public List<Region> getAvailableRegions() {
+        return availableRegions;
+    }
+
+    public List<Region> getExcludedRegions() {
+        return excludedRegions;
     }
 
     @Override
@@ -89,6 +102,16 @@ public class Game {
 
         public Builder storeLink(URL storeLink) {
             game.storeLink = storeLink;
+            return this;
+        }
+
+        public Builder availableRegions(List<Region> regions) {
+            game.availableRegions = regions;
+            return this;
+        }
+
+        public Builder excludedRegions(List<Region> regions) {
+            game.excludedRegions = regions;
             return this;
         }
 
