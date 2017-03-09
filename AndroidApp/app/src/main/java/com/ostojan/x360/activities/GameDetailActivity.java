@@ -35,8 +35,6 @@ public class GameDetailActivity extends AppCompatActivity implements Callback<Ga
     ImageView coverImage;
     @BindView(R.id.text_game_title)
     TextView title;
-    @BindView(R.id.text_store_link)
-    TextView storeLink;
 
     private int gameId;
     private Game game;
@@ -66,7 +64,7 @@ public class GameDetailActivity extends AppCompatActivity implements Callback<Ga
         apiController.getGameWithId(gameId, this);
     }
 
-    @OnClick(R.id.text_store_link)
+    @OnClick(R.id.button_store_link)
     public void storeLinkClicked() {
         if (game != null) {
             Uri uri = Uri.parse(game.getStoreLink().toString());
@@ -84,7 +82,6 @@ public class GameDetailActivity extends AppCompatActivity implements Callback<Ga
             return;
         }
         title.setText(game.getTitle());
-        storeLink.setClickable(true);
         Picasso.with(this)
                 .load(game.getCoverLink().toString())
                 .placeholder(R.drawable.ic_loading)

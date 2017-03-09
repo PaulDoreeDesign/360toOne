@@ -9,4 +9,6 @@
     <string name="title_game_title">Title</string>
     <string name="msg_store_link">Microsoft\'s store</string>
     <string name="error_no_such_game">There is no such game</string>
+    <string name="title_available_regions">Available regions</string>
+    <string name="msg_regions">Regions</string>
 </resources>

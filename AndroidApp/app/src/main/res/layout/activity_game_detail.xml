@@ -28,10 +28,26 @@
         android:textAppearance="@style/Base.TextAppearance.AppCompat.Large" />
 
     <Button
-        android:id="@+id/text_store_link"
+        android:id="@+id/button_store_link"
         style="@style/Widget.AppCompat.Button.Borderless.Colored"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/text_game_title"
         android:text="@string/msg_store_link" />
+
+    <TextView
+        android:text="@string/title_available_regions"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/text_available_regions_label"
+        android:layout_below="@+id/button_store_link"
+        android:textAppearance="@style/Base.TextAppearance.AppCompat.Medium"
+        android:layout_centerHorizontal="true" />
+
+    <TextView
+        android:text="@string/msg_regions"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/text_available_regions"
+        android:layout_below="@+id/text_available_regions_label" />
 </RelativeLayout>
