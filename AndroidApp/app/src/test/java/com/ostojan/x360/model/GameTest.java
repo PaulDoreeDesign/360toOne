@@ -4,6 +4,8 @@ import org.junit.Test;
 
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.List;
 
 import static org.junit.Assert.*;
 
@@ -72,8 +74,8 @@ public class GameTest {
     private void tryCompareTwoGamesWithDifferentIds() throws MalformedURLException {
         Integer id1 = 1;
         Integer id2 = 2;
-        Game game1 = GameHelper.createGameFromData(id1, GameHelper.TITLE, GameHelper.COVER_LINK, GameHelper.STORE_LINK);
-        Game game2 = GameHelper.createGameFromData(id2, GameHelper.TITLE, GameHelper.COVER_LINK, GameHelper.STORE_LINK);
+        Game game1 = GameHelper.createGameFromData(id1, GameHelper.TITLE, GameHelper.COVER_LINK, GameHelper.STORE_LINK, GameHelper.AVAILABLE_REGIONS, GameHelper.EXCLUDED_REGIONS);
+        Game game2 = GameHelper.createGameFromData(id2, GameHelper.TITLE, GameHelper.COVER_LINK, GameHelper.STORE_LINK, GameHelper.AVAILABLE_REGIONS, GameHelper.EXCLUDED_REGIONS);
         assertNotEquals("Games are equals", game1, game2);
         assertNotEquals("Games are equals", game2, game1);
     }
@@ -91,8 +93,8 @@ public class GameTest {
     private void tryCompareTwoGamesWithDifferentTitles() throws MalformedURLException {
         String title1 = "Game1";
         String title2 = "Game2";
-        Game game1 = GameHelper.createGameFromData(GameHelper.ID, title1, GameHelper.COVER_LINK, GameHelper.STORE_LINK);
-        Game game2 = GameHelper.createGameFromData(GameHelper.ID, title2, GameHelper.COVER_LINK, GameHelper.STORE_LINK);
+        Game game1 = GameHelper.createGameFromData(GameHelper.ID, title1, GameHelper.COVER_LINK, GameHelper.STORE_LINK, GameHelper.AVAILABLE_REGIONS, GameHelper.EXCLUDED_REGIONS);
+        Game game2 = GameHelper.createGameFromData(GameHelper.ID, title2, GameHelper.COVER_LINK, GameHelper.STORE_LINK, GameHelper.AVAILABLE_REGIONS, GameHelper.EXCLUDED_REGIONS);
         assertNotEquals("Games are equals", game1, game2);
         assertNotEquals("Games are equals", game2, game1);
     }
@@ -110,8 +112,8 @@ public class GameTest {
     private void tryCompareTwoGamesWithDifferentCoverLinks() throws MalformedURLException {
         String coverLink1 = "http://www.game.com/cover1.jpg";
         String coverLink2 = "http://www.game.com/cover2.jpg";
-        Game game1 = GameHelper.createGameFromData(GameHelper.ID, GameHelper.TITLE, coverLink1, GameHelper.STORE_LINK);
-        Game game2 = GameHelper.createGameFromData(GameHelper.ID, GameHelper.TITLE, coverLink2, GameHelper.STORE_LINK);
+        Game game1 = GameHelper.createGameFromData(GameHelper.ID, GameHelper.TITLE, coverLink1, GameHelper.STORE_LINK, GameHelper.AVAILABLE_REGIONS, GameHelper.EXCLUDED_REGIONS);
+        Game game2 = GameHelper.createGameFromData(GameHelper.ID, GameHelper.TITLE, coverLink2, GameHelper.STORE_LINK, GameHelper.AVAILABLE_REGIONS, GameHelper.EXCLUDED_REGIONS);
         assertNotEquals("Games are equals", game1, game2);
         assertNotEquals("Games are equals", game2, game1);
     }
@@ -129,8 +131,50 @@ public class GameTest {
     private void tryCompareTwoGamesWithDifferentStoreLinks() throws MalformedURLException {
         String storeLink1 = "http://www.game.com/store/game1/";
         String storeLink2 = "http://www.game.com/store/game2/";
-        Game game1 = GameHelper.createGameFromData(GameHelper.ID, GameHelper.TITLE, GameHelper.COVER_LINK, storeLink1);
-        Game game2 = GameHelper.createGameFromData(GameHelper.ID, GameHelper.TITLE, GameHelper.COVER_LINK, storeLink2);
+        Game game1 = GameHelper.createGameFromData(GameHelper.ID, GameHelper.TITLE, GameHelper.COVER_LINK, storeLink1, GameHelper.AVAILABLE_REGIONS, GameHelper.EXCLUDED_REGIONS);
+        Game game2 = GameHelper.createGameFromData(GameHelper.ID, GameHelper.TITLE, GameHelper.COVER_LINK, storeLink2, GameHelper.AVAILABLE_REGIONS, GameHelper.EXCLUDED_REGIONS);
+        assertNotEquals("Games are equals", game1, game2);
+        assertNotEquals("Games are equals", game2, game1);
+    }
+
+    @Test
+    public void compareTwoGamesWithDifferentAvailableRegions() {
+        try {
+            tryCompareTwoGamesWithDifferentAvailableRegions();
+        } catch (MalformedURLException e) {
+            e.printStackTrace();
+            fail("Couldn't create URL for Game object");
+        }
+    }
+
+    private void tryCompareTwoGamesWithDifferentAvailableRegions() throws MalformedURLException {
+        List<Region> availableRegions1 = new ArrayList<Region>() {{
+            add(RegionHelper.createSimpleRegion());
+        }};
+        List<Region> availableRegions2 = new ArrayList<>();
+        Game game1 = GameHelper.createGameFromData(GameHelper.ID, GameHelper.TITLE, GameHelper.COVER_LINK, GameHelper.STORE_LINK, availableRegions1, GameHelper.EXCLUDED_REGIONS);
+        Game game2 = GameHelper.createGameFromData(GameHelper.ID, GameHelper.TITLE, GameHelper.COVER_LINK, GameHelper.STORE_LINK, availableRegions2, GameHelper.EXCLUDED_REGIONS);
+        assertNotEquals("Games are equals", game1, game2);
+        assertNotEquals("Games are equals", game2, game1);
+    }
+
+    @Test
+    public void compareTwoGamesWithDifferentExcludedRegions() {
+        try {
+            tryCompareTwoGamesWithDifferentExcludedRegions();
+        } catch (MalformedURLException e) {
+            e.printStackTrace();
+            fail("Couldn't create URL for Game object");
+        }
+    }
+
+    private void tryCompareTwoGamesWithDifferentExcludedRegions() throws MalformedURLException {
+        List<Region> excludedRegions1 = new ArrayList<Region>() {{
+            add(RegionHelper.createSimpleRegion());
+        }};
+        List<Region> excludedRegions2 = new ArrayList<>();
+        Game game1 = GameHelper.createGameFromData(GameHelper.ID, GameHelper.TITLE, GameHelper.COVER_LINK, GameHelper.STORE_LINK, GameHelper.AVAILABLE_REGIONS, excludedRegions1);
+        Game game2 = GameHelper.createGameFromData(GameHelper.ID, GameHelper.TITLE, GameHelper.COVER_LINK, GameHelper.STORE_LINK, GameHelper.AVAILABLE_REGIONS, excludedRegions2);
         assertNotEquals("Games are equals", game1, game2);
         assertNotEquals("Games are equals", game2, game1);
     }

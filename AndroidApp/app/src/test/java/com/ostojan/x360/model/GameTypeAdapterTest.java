@@ -7,6 +7,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import java.net.MalformedURLException;
+import java.util.List;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.fail;
@@ -98,6 +99,36 @@ public class GameTypeAdapterTest {
     }
 
     @Test
+    public void createJsonFromGameWithoutAvailableRegions() {
+        try {
+            tryCreateJsonFromGameWithoutAvailableRegions();
+        } catch (MalformedURLException e) {
+            e.printStackTrace();
+            fail("Couldn't create URL for Game object");
+        }
+    }
+
+    private void tryCreateJsonFromGameWithoutAvailableRegions() throws MalformedURLException {
+        Game game = GameHelper.createSimpleGameWithoutAvailableRegions();
+        compareJsonWithParserResult(game);
+    }
+
+    @Test
+    public void createJsonFromGameWithoutExcludedRegions() {
+        try {
+            tryCreateJsonFromGameWithoutExcludedRegions();
+        } catch (MalformedURLException e) {
+            e.printStackTrace();
+            fail("Couldn't create URL for Game object");
+        }
+    }
+
+    private void tryCreateJsonFromGameWithoutExcludedRegions() throws MalformedURLException {
+        Game game = GameHelper.createSimpleGameWithoutExcludedRegions();
+        compareJsonWithParserResult(game);
+    }
+
+    @Test
     public void readGameFromJson() {
         try {
             tryReadGameFromJson();
@@ -150,7 +181,6 @@ public class GameTypeAdapterTest {
             e.printStackTrace();
             fail("Couldn't create URL for Game object");
         }
-        ;
     }
 
     private void tryReadGameWithoutCoverLinkFromJson() throws MalformedURLException {
@@ -173,6 +203,36 @@ public class GameTypeAdapterTest {
         compareGameWithParserResult(game);
     }
 
+    @Test
+    public void readGameWithoutAvailableRegionsFromJson() {
+        try {
+            tryReadGameWithoutAvailableRegionsFromJson();
+        } catch (MalformedURLException e) {
+            e.printStackTrace();
+            fail("Couldn't create URL for Game object");
+        }
+    }
+
+    private void tryReadGameWithoutAvailableRegionsFromJson() throws MalformedURLException {
+        Game game = GameHelper.createSimpleGameWithoutAvailableRegions();
+        compareGameWithParserResult(game);
+    }
+
+    @Test
+    public void readGameWithoutExcludedRegionsFromJson() {
+        try {
+            tryReadGameWithoutExcludedRegionsFromJson();
+        } catch (MalformedURLException e) {
+            e.printStackTrace();
+            fail("Couldn't create URL for Game object");
+        }
+    }
+
+    private void tryReadGameWithoutExcludedRegionsFromJson() throws MalformedURLException {
+        Game game = GameHelper.createSimpleGameWithoutExcludedRegions();
+        compareGameWithParserResult(game);
+    }
+
     private void compareJsonWithParserResult(Game game) {
         String json = createJsonStringFromGame(game);
         assertEquals("Result json string is not correct", gson.toJson(game), json);
@@ -188,10 +248,12 @@ public class GameTypeAdapterTest {
         return createJsonStringFromData(game.getId(),
                 game.getTitle(),
                 game.getCoverLink() != null ? game.getCoverLink().toString() : null,
-                game.getStoreLink() != null ? game.getStoreLink().toString() : null);
+                game.getStoreLink() != null ? game.getStoreLink().toString() : null,
+                game.getAvailableRegions(),
+                game.getExcludedRegions());
     }
 
-    private String createJsonStringFromData(Integer id, String title, String coverLink, String storeLink) {
+    private String createJsonStringFromData(Integer id, String title, String coverLink, String storeLink, List<Region> availableRegion, List<Region> excludedRegion) {
         String separator = "";
         StringBuilder json = new StringBuilder();
         json.append("{");
@@ -219,7 +281,59 @@ public class GameTypeAdapterTest {
             json.append(String.format("\"%s\"", storeLink));
             separator = ",";
         }
+        if (availableRegion != null) {
+            json.append(separator);
+            json.append("\"available_regions\":[");
+            json.append(createJsonStringFromRegionList(availableRegion));
+            json.append("]");
+            separator = ",";
+        }
+        if (excludedRegion != null) {
+            json.append(separator);
+            json.append("\"excluded_regions\":[");
+            json.append(createJsonStringFromRegionList(excludedRegion));
+            json.append("]");
+            separator = ",";
+        }
         json.append("}");
         return json.toString();
+    }
+
+    private String createJsonStringFromRegionList(List<Region> regions) {
+        String separator = "";
+        StringBuilder json = new StringBuilder();
+        for (Region region : regions) {
+            if (!regionExists(region)) {
+                continue;
+            }
+            String innerSeparator = "";
+            json.append(separator);
+            json.append("{");
+            if (region.getId() != null) {
+                json.append(innerSeparator);
+                json.append("\"id\":");
+                json.append(region.getId());
+                innerSeparator = ",";
+            }
+            if (region.getName() != null) {
+                json.append(innerSeparator);
+                json.append("\"name\":");
+                json.append(String.format("\"%s\"", region.getName()));
+                innerSeparator = ",";
+            }
+            if (region.getCode() != null) {
+                json.append(innerSeparator);
+                json.append("\"code\":");
+                json.append(String.format("\"%s\"", region.getCode()));
+                innerSeparator = ",";
+            }
+            json.append("}");
+            separator = ",";
+        }
+        return json.toString();
+    }
+
+    private boolean regionExists(Region region) {
+        return region.getId() != null || region.getName() != null || region.getCode() != null;
     }
 }
