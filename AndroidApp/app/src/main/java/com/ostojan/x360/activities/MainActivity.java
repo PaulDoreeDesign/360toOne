@@ -2,6 +2,7 @@ package com.ostojan.x360.activities;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
@@ -26,10 +27,12 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class MainActivity extends AppCompatActivity implements View.OnClickListener, Callback<List<Game>> {
+public class MainActivity extends AppCompatActivity implements View.OnClickListener, Callback<List<Game>>, SwipeRefreshLayout.OnRefreshListener {
 
     private static final String LOG_TAG = MainActivity.class.getName();
 
+    @BindView(R.id.layout_activity_main)
+    SwipeRefreshLayout mainLayout;
     @BindView(R.id.recycler_games_list)
     RecyclerView gamesList;
 
@@ -42,6 +45,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
         createGameListRecyclerView();
+        mainLayout.setOnRefreshListener(this);
         apiController = new ApiController(ApiClient.getApiClientInterface());
     }
 
@@ -56,7 +60,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     @Override
     protected void onResume() {
         super.onResume();
-        apiController.getGames(this);
+        reloadGames();
     }
 
     @Override
@@ -69,6 +73,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     @Override
     public void onResponse(Call<List<Game>> call, Response<List<Game>> response) {
+        mainLayout.setRefreshing(false);
         List<Game> games = response.body();
         if (games == null) {
             Toast.makeText(this, R.string.error_problem_with_data, Toast.LENGTH_SHORT).show();
@@ -79,6 +84,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     @Override
     public void onFailure(Call<List<Game>> call, Throwable error) {
+        mainLayout.setRefreshing(false);
         Log.e(LOG_TAG, error.getMessage());
         if (error instanceof SocketTimeoutException) {
             Toast.makeText(this, R.string.error_problem_with_server, Toast.LENGTH_SHORT).show();
@@ -87,5 +93,16 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         } else {
             Toast.makeText(this, R.string.error_unknown, Toast.LENGTH_SHORT).show();
         }
+    }
+
+    @Override
+    public void onRefresh() {
+        reloadGames();
+    }
+
+    private void reloadGames() {
+        mainLayout.setRefreshing(true);
+        gamesAdapter.clear();
+        apiController.getGames(this);
     }
 }

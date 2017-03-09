@@ -65,4 +65,9 @@ public class GameAdapter extends RecyclerView.Adapter<GameViewHolder> {
     public Game get(int index) {
         return this.games.get(index);
     }
+
+    public void clear() {
+        this.games.clear();
+        notifyDataSetChanged();
+    }
 }
