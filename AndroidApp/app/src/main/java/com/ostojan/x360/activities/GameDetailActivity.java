@@ -13,10 +13,12 @@ import com.ostojan.x360.R;
 import com.ostojan.x360.controller.ApiClient;
 import com.ostojan.x360.controller.ApiController;
 import com.ostojan.x360.model.Game;
+import com.ostojan.x360.model.Region;
 import com.squareup.picasso.Picasso;
 
 import java.net.ConnectException;
 import java.net.SocketTimeoutException;
+import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -35,6 +37,8 @@ public class GameDetailActivity extends AppCompatActivity implements Callback<Ga
     ImageView coverImage;
     @BindView(R.id.text_game_title)
     TextView title;
+    @BindView(R.id.text_available_regions)
+    TextView availableRegions;
 
     private int gameId;
     private Game game;
@@ -82,11 +86,23 @@ public class GameDetailActivity extends AppCompatActivity implements Callback<Ga
             return;
         }
         title.setText(game.getTitle());
+        availableRegions.setText(createStringFromRegionsList(game.getAvailableRegions()));
         Picasso.with(this)
                 .load(game.getCoverLink().toString())
                 .placeholder(R.drawable.ic_loading)
                 .error(R.drawable.ic_error)
                 .into(coverImage);
+    }
+
+    private String createStringFromRegionsList(List<Region> regions) {
+        String separator = "";
+        StringBuilder regionsString = new StringBuilder();
+        for (Region region : regions) {
+            regionsString.append(separator);
+            regionsString.append(region.getName());
+            separator = ", ";
+        }
+        return regionsString.toString();
     }
 
     @Override
