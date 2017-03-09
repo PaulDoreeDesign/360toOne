@@ -65,7 +65,13 @@ public class Game {
         if (coverLink != null ? !coverLink.equals(game.coverLink) : game.coverLink != null) {
             return false;
         }
-        return storeLink != null ? storeLink.equals(game.storeLink) : game.storeLink == null;
+        if (storeLink != null ? !storeLink.equals(game.storeLink) : game.storeLink != null) {
+            return false;
+        }
+        if (availableRegions != null ? !availableRegions.equals(game.availableRegions) : game.availableRegions != null) {
+            return false;
+        }
+        return excludedRegions != null ? excludedRegions.equals(game.excludedRegions) : game.excludedRegions == null;
     }
 
     public static class Builder {
