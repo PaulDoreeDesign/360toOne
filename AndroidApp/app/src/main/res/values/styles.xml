@@ -7,5 +7,10 @@
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
     </style>
+    
+    <style name="GameItemTitle" parent="Base.TextAppearance.AppCompat.Medium">
+        <item name="android:background">@drawable/gray_rounded_background</item>
+        <item name="android:textColor">@android:color/white</item>
+    </style>
 
 </resources>
