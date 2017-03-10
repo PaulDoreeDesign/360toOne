@@ -3,6 +3,7 @@ package com.ostojan.x360.activities;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.widget.ImageView;
@@ -33,10 +34,10 @@ public class GameDetailActivity extends AppCompatActivity implements Callback<Ga
 
     public static final String EXTRA_GAME_ID = "EXTRA_GAME_ID";
 
+    @BindView(R.id.collapsing_toolbar_game_detail)
+    CollapsingToolbarLayout collapsingToolbar;
     @BindView(R.id.image_detail_cover)
     ImageView coverImage;
-    @BindView(R.id.text_game_title)
-    TextView title;
     @BindView(R.id.text_available_regions)
     TextView availableRegions;
 
@@ -85,12 +86,14 @@ public class GameDetailActivity extends AppCompatActivity implements Callback<Ga
             Toast.makeText(this, R.string.error_problem_with_data, Toast.LENGTH_SHORT).show();
             return;
         }
-        title.setText(game.getTitle());
+        collapsingToolbar.setTitle(game.getTitle());
         availableRegions.setText(createStringFromRegionsList(game.getAvailableRegions()));
         Picasso.with(this)
                 .load(game.getCoverLink().toString())
                 .placeholder(R.drawable.ic_loading)
                 .error(R.drawable.ic_error)
+                .fit()
+                .centerCrop()
                 .into(coverImage);
     }
 
