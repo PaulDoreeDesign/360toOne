@@ -43,6 +43,8 @@ public class GameAdapter extends RecyclerView.Adapter<GameViewHolder> {
         Picasso.with(holder.itemView.getContext())
                 .load(game.getCoverLink().toString())
                 .placeholder(R.drawable.ic_loading)
+                .fit()
+                .centerCrop()
                 .error(R.drawable.ic_error)
                 .into(holder.coverImage);
     }
